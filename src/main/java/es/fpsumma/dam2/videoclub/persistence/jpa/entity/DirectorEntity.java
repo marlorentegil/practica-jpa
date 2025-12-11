@@ -10,7 +10,7 @@ public class DirectorEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nombre")
+    @Column(nullable = false, length = 100)
     private String nombre;
 
     // Añadir relación con Lista de películas
