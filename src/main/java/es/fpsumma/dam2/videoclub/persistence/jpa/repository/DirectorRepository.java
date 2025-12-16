@@ -10,13 +10,15 @@ import java.util.Optional;
 
 public interface DirectorRepository extends JpaRepository<DirectorEntity, Long> {
 
-    //Ejemplo de método de consulta por nombre
+    //Metodo de consulta por convencion: busqueda exacta
     Optional<DirectorEntity> findByNombre(String nombre);
 
+    //Metodo de consulta por convencion: busqueda parcieal e insensible a mayúsculas
     List<DirectorEntity> findByNombreContainingIgnoreCase(String nombre);
 
-    // 2) Mismo efecto pero usando @Query con parámetro nombrado
+    //Metodo de consulta explicita
     @Query("SELECT d FROM DirectorEntity d WHERE d.nombre = :nombre")
-    Optional<DirectorEntity> buscarPorNombre(@Param("nombre") String nombre);
+    List<DirectorEntity> buscarPorNombre(@Param("nombre") String nombre);
 
 }
+
