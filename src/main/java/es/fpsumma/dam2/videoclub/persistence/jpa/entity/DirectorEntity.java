@@ -2,6 +2,9 @@ package es.fpsumma.dam2.videoclub.persistence.jpa.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "director")
 public class DirectorEntity {
@@ -13,22 +16,24 @@ public class DirectorEntity {
     @Column(nullable = false, length = 100)
     private String nombre;
 
-    // Añadir relación con Lista de películas
+    //Un director puede dirigir muchas peliculas
+    @OneToMany(mappedBy = "director")
+    private List<PeliculaEntity> peliculas = new ArrayList<>();
 
 
 
     // ===== Constructores =====
-    public DirectorEntity(Long id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
-    }
 
     public DirectorEntity() {
     }
 
+    public DirectorEntity(Long id, String nombre, List<PeliculaEntity> peliculas) {
+        this.id = id;
+        this.nombre = nombre;
+        this.peliculas = peliculas;
+    }
 
     // ===== Getters y setters =====
-
     public Long getId() {
         return id;
     }
@@ -45,4 +50,11 @@ public class DirectorEntity {
         this.nombre = nombre;
     }
 
+    public List<PeliculaEntity> getPeliculas() {
+        return peliculas;
+    }
+
+    public void setPeliculas(List<PeliculaEntity> peliculas) {
+        this.peliculas = peliculas;
+    }
 }

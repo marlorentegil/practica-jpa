@@ -22,22 +22,22 @@ public class PeliculaEntity {
     @Column(nullable = true)
     private Double puntuacion;
 
-    @Column(nullable = false, name = "director_id")
-    private Long directorId;
-
-    // fk_pelicula_director
+    //La entidad que tiene el @ManyToOne casi siempre es la que tiene la FK real en la tabla
+    @ManyToOne
+    @JoinColumn( name = "director_id")
+    private DirectorEntity directorEntity;
 
 
     public PeliculaEntity() {
     }
 
-    public PeliculaEntity(Long id, String titulo, String genero, Integer anioEstreno, Double puntuacion, Long directorId) {
+    public PeliculaEntity(Long id, String titulo, String genero, Integer anioEstreno, Double puntuacion, DirectorEntity directorEntity) {
         this.id = id;
         this.titulo = titulo;
         this.genero = genero;
         this.anioEstreno = anioEstreno;
         this.puntuacion = puntuacion;
-        this.directorId = directorId;
+        this.directorEntity = directorEntity;
     }
 
     public Long getId() {
@@ -80,11 +80,11 @@ public class PeliculaEntity {
         this.puntuacion = puntuacion;
     }
 
-    public Long getDirectorId() {
-        return directorId;
+    public DirectorEntity getDirectorEntity() {
+        return directorEntity;
     }
 
-    public void setDirectorId(Long directorId) {
-        this.directorId = directorId;
+    public void setDirectorEntity(DirectorEntity directorEntity) {
+        this.directorEntity = directorEntity;
     }
 }
