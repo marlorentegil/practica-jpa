@@ -2,6 +2,9 @@ package es.fpsumma.dam2.videoclub.persistence.jpa.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "pelicula")
 public class PeliculaEntity {
@@ -27,17 +30,28 @@ public class PeliculaEntity {
     @JoinColumn( name = "director_id")
     private DirectorEntity directorEntity;
 
+    //Una peli la pueden hacer muchos actores
+    //Un actor puede participar en muchas peliculas
+    @ManyToMany
+    @JoinTable(
+            name = "pelicula_actor",
+            joinColumns = @JoinColumn(name = "pelicula_id"),
+            inverseJoinColumns = @JoinColumn(name = "actor_id")
+    )
+    private List<ActorEntity> actores = new ArrayList<>();
+
 
     public PeliculaEntity() {
     }
 
-    public PeliculaEntity(Long id, String titulo, String genero, Integer anioEstreno, Double puntuacion, DirectorEntity directorEntity) {
+    public PeliculaEntity(Long id, String titulo, String genero, Integer anioEstreno, Double puntuacion, DirectorEntity directorEntity, List<ActorEntity> actores) {
         this.id = id;
         this.titulo = titulo;
         this.genero = genero;
         this.anioEstreno = anioEstreno;
         this.puntuacion = puntuacion;
         this.directorEntity = directorEntity;
+        this.actores = actores;
     }
 
     public Long getId() {
@@ -86,5 +100,13 @@ public class PeliculaEntity {
 
     public void setDirectorEntity(DirectorEntity directorEntity) {
         this.directorEntity = directorEntity;
+    }
+
+    public List<ActorEntity> getActores() {
+        return actores;
+    }
+
+    public void setActores(List<ActorEntity> actores) {
+        this.actores = actores;
     }
 }
