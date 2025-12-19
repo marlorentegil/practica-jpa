@@ -9,16 +9,17 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DirectorRepository extends JpaRepository<DirectorEntity, Long> {
-
-    //Metodo de consulta por convencion: busqueda exacta
+    //Buscar un director por su nombre exacto
     Optional<DirectorEntity> findByNombre(String nombre);
 
-    //Metodo de consulta por convencion: busqueda parcieal e insensible a mayúsculas
-    List<DirectorEntity> findByNombreContainingIgnoreCase(String nombre);
+    //Comprobar si existe un director con un determinado nombre
+    boolean existsByNombre(String nombre);
 
-    //Metodo de consulta explicita
+    //(Obligatorio con @Query) Consulta JPQL por nombre
     @Query("SELECT d FROM DirectorEntity d WHERE d.nombre = :nombre")
-    List<DirectorEntity> buscarPorNombre(@Param("nombre") String nombre);
+    DirectorEntity buscarPorNombre(@Param("nombre") String nombre);
 
+    //Ordenación: obtener lista de directores ordenados alfabéticamente (asc)
+    List<DirectorEntity> findAllByOrderByNombreAsc();
 }
 
