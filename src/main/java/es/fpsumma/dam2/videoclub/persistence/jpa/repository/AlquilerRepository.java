@@ -5,21 +5,23 @@ import es.fpsumma.dam2.videoclub.persistence.jpa.entity.AlquilerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
+@Repository
 public interface AlquilerRepository extends JpaRepository<AlquilerEntity, Long> {
-    //Obtener alquileres de un cliente usando su email
+
+    //Obtiene el historial de alquileres de un cliente mediante su email
     List<AlquilerEntity> findByClienteEntity_Email(String email);
 
-    //Obtener alquileres de una película usando su título
+    //Busca qué personas han alquilado una película concreta por su título
     List<AlquilerEntity> findByPeliculaEntity_Titulo(String titulo);
 
-    //Obtener alquileres activos (sin fecha de devolución)
+    //Busca registros donde la fecha de devolución es null (alquileres todavía en curso)
     List<AlquilerEntity> findByFechaDevolucionIsNull();
 
-    //(Obligatorio con @Query) Alquileres activos de un cliente por su email
+    //CONSULTA PERSONALIZADA: busca solo alquileres sin devolver de un cliente específico
     @Query("SELECT a FROM AlquilerEntity a WHERE a.clienteEntity.email = :email AND a.fechaDevolucion IS NULL")
     List<AlquilerEntity> buscarAlquileresActivosPorEmail(@Param("email") String email);
 }

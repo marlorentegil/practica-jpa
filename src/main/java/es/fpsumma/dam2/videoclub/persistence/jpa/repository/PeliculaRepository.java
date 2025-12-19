@@ -6,29 +6,31 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 
 import java.awt.print.Pageable;
 import java.util.List;
 
+@Repository
 public interface PeliculaRepository extends JpaRepository<PeliculaEntity, Long> {
-    //Obtener todas las películas de un determinado director (por nombre)
+
+    //Navega a la entidad director y busca por su atributo nombre
     List<PeliculaEntity> findByDirectorEntity_Nombre(String nombre);
 
-    //Obtener todas las películas de un determinado género
+    //Filtra películas por el campo género
     List<PeliculaEntity> findByGenero(String genero);
 
-    //Obtener películas con puntuación mínima
+    //Busca películas con puntuación igual o superior al parámetro (>=)
     List<PeliculaEntity> findByPuntuacionGreaterThanEqual(Double puntuacion);
 
-    //(Obligatorio con @Query) Películas donde participe un actor por nombre
+    //CONSULTA PERSONALIZADA: une película con actores y filtra por el nombre del actor
     @Query("SELECT p FROM PeliculaEntity p JOIN p.actores a WHERE a.nombre = :nombreActor")
     List<PeliculaEntity> buscarPorNombreActor(@Param("nombreActor") String nombreActor);
 
-    //Paginación por género
+    //Devuelve una lista limitada (página) de películas de un género
     Page<PeliculaEntity> findByGenero(String genero, Pageable pageable);
 
-    //Ordenación por año o puntuación
+    //Obtiene todas las películas empezando por las más recientes
     List<PeliculaEntity> findAllByOrderByAnioEstrenoDesc();
-    List<PeliculaEntity> findAllByOrderByPuntuacionDesc();
 }
